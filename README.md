@@ -12,6 +12,8 @@ designed for **node** written in **typescript**, with **tests**
 
 ## Minimal Chat Demo
 
+https://chef-js-socket.herokuapp.com/
+
 ```bash
 $ yarn add chef-socket
 $ yarn chef-socket node_modules/chef-socket/demo --plugin node_modules/chef-core/chat.js
