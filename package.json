@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "chef-core": "^1.0.0",
+    "chef-core": "^1.0.1",
     "express": "^4.17.2",
     "socket.io": "^4.4.1"
   },
