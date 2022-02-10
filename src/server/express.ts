@@ -3,9 +3,8 @@ import express from "express";
 import { Socket } from "socket.io";
 import { getPlugin } from "../plugin-manager.js";
 import { WSEvent, WSGet, WSPlugin, WSServer } from "../types.js";
-import config from "../config.js";
 
-export default async function createWrappedServer(): Promise<WSServer> {
+export default async function createWrappedServer(config): Promise<WSServer> {
   const app: any = createServer();
   const server = http.createServer(app);
 

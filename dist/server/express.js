@@ -45,11 +45,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = __importDefault(require("http"));
 const express_1 = __importDefault(require("express"));
 const plugin_manager_js_1 = require("../plugin-manager.js");
-const config_js_1 = __importDefault(require("../config.js"));
-async function createWrappedServer() {
+async function createWrappedServer(config) {
   const app = createServer();
   const server = http_1.default.createServer(app);
-  if (Object.keys(config_js_1.default.plugins).length) {
+  if (Object.keys(config.plugins).length) {
     const { Server } = await Promise.resolve().then(() =>
       __importStar(require("socket.io"))
     );
@@ -58,24 +57,21 @@ async function createWrappedServer() {
     io.on("connection", (socket) => {
       const id = socket.id;
       // wait for handshake events
-      socket.on(config_js_1.default.join, (topic) => {
-        const joinEvent = { event: config_js_1.default.join, id, data: topic };
-        const plugin = (0, plugin_manager_js_1.getPlugin)(
-          config_js_1.default,
-          topic
-        );
+      socket.on(config.join, (topic) => {
+        const joinEvent = { event: config.join, id, data: topic };
+        const plugin = (0, plugin_manager_js_1.getPlugin)(config, topic);
         // check if we have such plugin
         if (plugin) {
           // socket joins room
           socket.join(topic);
           // notifies everybody
           io.to(topic).emit(joinEvent.event, joinEvent.id, topic);
-          if (config_js_1.default.debug) {
+          if (config.debug) {
             console.info(joinEvent);
           }
           // on all actions from socket, use plugin
           socket.onAny((event, data) => {
-            if (config_js_1.default.debug) {
+            if (config.debug) {
               console.info({ event, id, data });
             }
             // bind io to context for plugin to have access
@@ -84,18 +80,15 @@ async function createWrappedServer() {
           socket.on("disconnect", () => {
             socket.leave(topic);
             const leaveEvent = {
-              event: config_js_1.default.leave,
+              event: config.leave,
               id,
               data: topic,
             };
-            if (config_js_1.default.debug) {
+            if (config.debug) {
               console.info(leaveEvent);
             }
             // handle leave event in plugins
-            const plugin = (0, plugin_manager_js_1.getPlugin)(
-              config_js_1.default,
-              topic
-            );
+            const plugin = (0, plugin_manager_js_1.getPlugin)(config, topic);
             plugin?.call(io, socket, leaveEvent);
           });
         }
