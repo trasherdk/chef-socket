@@ -1,0 +1,15 @@
+{
+  "name": "chef-socket",
+  "version": "1.0.0",
+  "description": "bouncer.js + express + socket.io = static files server + websockets",
+  "main": "index.js",
+  "repository": "https://github.com/Prozi/chef-socket",
+  "author": "Jacek Pietal <Prozi>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "@jacekpietal/bouncer.js": "^3.4.1",
+    "express": "^4.17.2",
+    "socket.io": "^4.4.1"
+  }
+}
