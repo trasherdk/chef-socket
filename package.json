@@ -1,6 +1,6 @@
 {
   "name": "chef-socket",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "bouncer.js + express + socket.io = static files server + websockets",
   "main": "index.js",
   "bin": {

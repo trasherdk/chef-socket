@@ -3,11 +3,14 @@ import createServer from "./express";
 import createFileReader from "./static-files.js";
 import { WSConfig, WSServer } from "../types.js";
 import baseConfig from "../config.js";
+import { populatePlugins } from "../plugin-manager";
 
 export default async function startServer(
   userConfig: any = {}
 ): Promise<WSServer> {
   const config: WSConfig = { ...baseConfig, ...userConfig };
+
+  populatePlugins(config);
 
   // create the express or uws server inside a wrapper
   const server: any = await createServer();
