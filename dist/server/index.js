@@ -1,44 +1,94 @@
 "use strict";
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const cache_1 = __importDefault(require("../cache"));
-const express_1 = __importDefault(require("./express"));
-const static_files_js_1 = __importDefault(require("./static-files.js"));
-const config_js_1 = __importDefault(require("../config.js"));
-const plugin_manager_1 = require("../plugin-manager");
-async function startServer(userConfig = {}) {
-  const config = { ...config_js_1.default, ...userConfig };
-  await (0, plugin_manager_1.populatePlugins)(config);
-  // create the express or uws server inside a wrapper
-  const server = await (0, express_1.default)(config);
-  // create the static files reader based on folder
-  const fileReader = (0, static_files_js_1.default)(config.folder);
-  // and create a cache for above
-  const fileReaderCache = new cache_1.default(fileReader);
-  // everything goes to the reader
-  server.get("/*", (res, req, next) => {
-    const url = getUrl(req.originalUrl);
-    const { status, mime, body } = fileReaderCache.get(url);
-    if (config.debug) {
-      console.info(status, mime, url);
+exports.requestHandler = exports.createServer = void 0;
+const http_1 = __importDefault(require("http"));
+const express_1 = __importDefault(require("express"));
+const socket_io_1 = require("socket.io");
+const plugins_1 = require("chef-core/dist/plugins");
+const get_url_1 = __importDefault(require("chef-core/dist/server/get-url"));
+const config_1 = __importDefault(require("chef-core/dist/config"));
+async function createServer(config) {
+    const app = (0, express_1.default)();
+    const server = http_1.default.createServer(app);
+    if (Object.keys(config.plugins).length) {
+        const io = new socket_io_1.Server(server);
+        // when there is a connection from new user socket
+        io.on("connection", (socket) => {
+            const id = socket.id;
+            // wait for handshake events
+            socket.on(config.join, (topic) => {
+                const joinEvent = { event: config.join, id, data: topic };
+                const plugin = (0, plugins_1.getPlugin)(config, topic);
+                // check if we have such plugin
+                if (plugin) {
+                    // socket joins room
+                    socket.join(topic);
+                    // notifies everybody
+                    io.to(topic).emit(joinEvent.event, joinEvent.id, topic);
+                    if (config.debug) {
+                        console.info(joinEvent);
+                    }
+                    // on all actions from socket, use plugin
+                    socket.onAny((event, data) => {
+                        if (config.debug) {
+                            console.info({ event, id, data });
+                        }
+                        // bind io to context for plugin to have access
+                        plugin?.call(io, socket, { event, id, data });
+                    });
+                    socket.on("disconnect", () => {
+                        socket.leave(topic);
+                        const leaveEvent = {
+                            event: config.leave,
+                            id,
+                            data: topic,
+                        };
+                        if (config.debug) {
+                            console.info(leaveEvent);
+                        }
+                        // handle leave event in plugins
+                        const plugin = (0, plugins_1.getPlugin)(config, topic);
+                        plugin?.call(io, socket, leaveEvent);
+                    });
+                }
+            });
+        });
     }
-    // header sets content type
-    res.header("Content-Type", mime);
-    // write header sets status
-    res.writeHeader(status);
-    res.end(body);
-  });
-  // finally start the server on process.env.PORT || 4200
-  await server.listen(config.port);
-  return server;
+    // WSGet compatible, this = method: string
+    function expressReader(path, wsGet) {
+        const action = app[this.toLowerCase()];
+        if (action) {
+            action.call(app, path, (req, res, next) => wsGet(res, req, next));
+        }
+    }
+    return {
+        async listen(port) {
+            return new Promise((resolve) => {
+                // ensure port is number
+                server.listen(+port, () => resolve(server));
+            });
+        },
+        get: expressReader.bind("GET"),
+        post: expressReader.bind("POST"),
+        any: expressReader.bind("ANY"),
+    };
 }
-exports.default = startServer;
-function getUrl(url) {
-  return decodeURIComponent(
-    url.replace(/^\/+/, "").split("?")[0].split("#")[0]
-  );
+exports.createServer = createServer;
+function requestHandler(fileReaderCache) {
+    return (res, req) => {
+        const url = (0, get_url_1.default)(req.originalUrl);
+        const { status, mime, body } = fileReaderCache.get(url);
+        if (config_1.default.debug) {
+            console.info(status, mime, url);
+        }
+        // header sets content type
+        res.header("Content-Type", mime);
+        // write header sets status
+        res.writeHeader(status);
+        res.end(body);
+    };
 }
+exports.requestHandler = requestHandler;
