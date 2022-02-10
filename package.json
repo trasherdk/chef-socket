@@ -1,8 +1,9 @@
 {
   "name": "chef-socket",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "chef-js + express + socket.io = static files server + websockets",
   "main": "index.js",
+  "types": "./dist/index.d.ts",
   "bin": {
     "chef-socket": "./bin/chef-socket"
   },
