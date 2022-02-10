@@ -1,16 +1,17 @@
 import http from "http";
 import express from "express";
-import { Socket } from "socket.io";
+import { Socket, Server } from "socket.io";
 import { getPlugin } from "../plugin-manager.js";
-import { WSEvent, WSGet, WSPlugin, WSServer } from "../types.js";
+import { WSConfig, WSEvent, WSGet, WSPlugin, WSServer } from "../types.js";
 
-export default async function createWrappedServer(config): Promise<WSServer> {
+export default async function createWrappedServer(
+  config: WSConfig
+): Promise<WSServer> {
   const app: any = createServer();
   const server = http.createServer(app);
 
   if (Object.keys(config.plugins).length) {
-    const { Server } = await import("socket.io");
-    const io = new Server(server);
+    const io: Server = new Server(server);
 
     // when there is a connection from new user socket
     io.on("connection", (socket: Socket) => {

@@ -12,7 +12,7 @@ const config_js_1 = __importDefault(require("../config.js"));
 const plugin_manager_1 = require("../plugin-manager");
 async function startServer(userConfig = {}) {
   const config = { ...config_js_1.default, ...userConfig };
-  (0, plugin_manager_1.populatePlugins)(config);
+  await (0, plugin_manager_1.populatePlugins)(config);
   // create the express or uws server inside a wrapper
   const server = await (0, express_1.default)(config);
   // create the static files reader based on folder
