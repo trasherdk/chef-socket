@@ -10,6 +10,13 @@ designed for **node** written in **typescript**, with **tests**
 
 - `express` for serving files (and `socket.io` for websockets)
 
+## Minimal Chat Demo
+
+```bash
+$ yarn add chef-socket
+$ yarn chef-socket node_modules/chef-socket/demo --plugin node_modules/chef-core/chat.js
+```
+
 ## Running
 
 ```bash

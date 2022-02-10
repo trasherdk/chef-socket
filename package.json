@@ -1,6 +1,6 @@
 {
   "name": "chef-socket",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "keywords": [
     "chef-js",
     "server",
@@ -17,7 +17,8 @@
     "chef-socket": "./bin/chef-socket"
   },
   "files": [
-    "dist"
+    "dist",
+    "demo"
   ],
   "repository": "https://github.com/chef-js/socket",
   "author": "Jacek Pietal <Prozi>",
