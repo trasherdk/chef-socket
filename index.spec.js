@@ -56,6 +56,7 @@ describe("GIVEN bouncer is provided", () => {
       const { config, startServer } = require("./dist");
 
       startServer({
+        folder: "demo",
         port: 4200,
         plugins: {
           chat: function () {
