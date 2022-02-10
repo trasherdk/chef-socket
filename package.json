@@ -1,11 +1,12 @@
 {
   "name": "chef-socket",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "chef-js + express + socket.io = static files server + websockets",
   "main": "index.js",
   "bin": {
     "chef-socket": "./bin/chef-socket"
   },
+  "files": ["dist"],
   "repository": "https://github.com/chef-js/socket",
   "author": "Jacek Pietal <Prozi>",
   "license": "MIT",
