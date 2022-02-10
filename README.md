@@ -1,8 +1,8 @@
 # chef-socket
 
-<img style="max-width: 100%;" src="https://raw.githubusercontent.com/Prozi/chef-socket/main/chef.png" width="150" />
+<img style="max-width: 100%;" src="https://raw.githubusercontent.com/chef-js/socket/main/chef.png" width="150" />
 
-<a href="https://badge.fury.io/js/chef-socket"><img src="https://badge.fury.io/js/chef-socket.svg" alt="npm package version" /></a> <a href="https://circleci.com/gh/Prozi/chef-socket"><img src="https://circleci.com/gh/Prozi/chef-socket.svg?style=shield" alt="tests status" /></a>
+<a href="https://badge.fury.io/js/chef-socket"><img src="https://badge.fury.io/js/chef-socket.svg" alt="npm package version" /></a> <a href="https://circleci.com/gh/chef-js/socket"><img src="https://circleci.com/gh/chef-js/socket.svg?style=shield" alt="tests status" /></a>
 
 **web-sockets** micro-service manager and **static files server** at the same port,
 
