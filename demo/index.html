@@ -43,7 +43,7 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"
     ></script>
     <script type="text/javascript">
-      const socket = new io('ws://localhost:4200', { transports: ["websocket"] })
+      const socket = new io(location.origin.replace(/^http/, 'ws'), { transports: ["websocket"] })
       const refs = getHTMLElements()
 
       socket.on('connect', () => {
