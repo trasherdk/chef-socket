@@ -40,7 +40,7 @@
     "precommit": "yarn build && npx prettier . --write"
   },
   "dependencies": {
-    "chef-core": "^1.0.5",
+    "chef-core": "^1.0.7",
     "express": "^4.17.2",
     "socket.io": "^4.4.1"
   },
