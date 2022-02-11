@@ -20,7 +20,8 @@
   "files": [
     "dist",
     "demo",
-    "bin"
+    "bin",
+    "ssl"
   ],
   "repository": "git://github.com/chef-js/socket.git",
   "author": "Jacek Pietal <Prozi>",
