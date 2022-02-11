@@ -41,6 +41,8 @@ startServer({
   leave: "/leave",
   // folder to static server files
   folder: process.argv[2],
+  // ssl = undefined | { key, cert }
+  ssl: undefined,
 }).then((server) => {
   // server api is get, post, any
   server.any("/*", (res, req) => {
