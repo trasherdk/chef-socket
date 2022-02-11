@@ -1,4 +1,5 @@
 import http from "http";
+import https from "https";
 import express from "express";
 import Cache from "chef-core/dist/cache";
 import { Socket, Server } from "socket.io";
@@ -12,10 +13,11 @@ import {
 } from "chef-core/dist/types";
 import getUrl from "chef-core/dist/server/get-url";
 import config from "chef-core/dist/config";
+import { readFileSync } from "fs";
 
 export async function createServer(config: WSConfig): Promise<WSServer> {
   const app: any = express();
-  const server = http.createServer(app);
+  const server: any = createExpressServer(config, app);
 
   if (Object.keys(config.plugins).length) {
     const io = new Server(server);
@@ -99,6 +101,25 @@ export async function createServer(config: WSConfig): Promise<WSServer> {
     post: expressReader.bind("POST"),
     any: expressReader.bind("ANY"),
   };
+}
+
+function createExpressServer(config: WSConfig, app: any): any {
+  // spread ssl from config
+  const { ssl } = config;
+
+  // if config key and cert present
+  if (ssl?.key && ssl?.cert) {
+    const { key, cert } = ssl;
+
+    // start ssl app and finish
+    return https.createServer(
+      { key: readFileSync(key), cert: readFileSync(cert) },
+      app
+    );
+  }
+
+  // else start normal app
+  return http.createServer(app);
 }
 
 export function requestHandler(fileReaderCache: Cache) {

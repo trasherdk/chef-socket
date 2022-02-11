@@ -1,6 +1,6 @@
 {
   "name": "chef-socket",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "keywords": [
     "chef-js",
     "server",
@@ -22,17 +22,18 @@
     "demo",
     "bin"
   ],
-  "repository": "https://github.com/chef-js/socket",
+  "repository": "git://github.com/chef-js/socket.git",
   "author": "Jacek Pietal <Prozi>",
   "license": "MIT",
   "private": false,
   "scripts": {
     "build": "tsc",
     "test": "jest",
-    "start": "bin/chef-socket demo --plugin node_modules/chef-core/chat.js"
+    "start": "bin/chef-socket demo --plugin node_modules/chef-core/chat.js",
+    "precommit": "yarn build && npx prettier . --write"
   },
   "dependencies": {
-    "chef-core": "^1.0.2",
+    "chef-core": "^1.0.5",
     "express": "^4.17.2",
     "socket.io": "^4.4.1"
   },
