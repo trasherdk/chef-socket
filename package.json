@@ -1,15 +1,21 @@
 {
   "name": "chef-socket",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "keywords": [
     "chef-js",
     "server",
     "static-serve",
     "http-server",
+    "https-server",
+    "nodejs-server",
     "express",
+    "spa",
+    "nodejs",
+    "javascript",
+    "cli",
+    "typescript",
     "socket.io",
-    "websockets",
-    "spa"
+    "websockets"
   ],
   "description": "chef-js + express + socket.io = static files server + websockets",
   "main": "index.js",
@@ -20,14 +26,14 @@
   "files": [
     "dist",
     "demo",
-    "bin",
-    "ssl"
+    "bin"
   ],
   "repository": "git://github.com/chef-js/socket.git",
   "author": "Jacek Pietal <Prozi>",
   "license": "MIT",
   "private": false,
   "scripts": {
+    "prebuild": "rm -rf dist",
     "build": "tsc",
     "test": "jest",
     "start": "bin/chef-socket demo --plugin node_modules/chef-core/chat.js",

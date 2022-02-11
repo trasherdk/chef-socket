@@ -22,7 +22,7 @@ $ yarn chef-socket node_modules/chef-socket/demo --plugin node_modules/chef-core
 ## Running
 
 ```bash
-$ [PORT=4200] yarn chef-socket folder [--debug] [--plugin path/to/file.js]
+$ [PORT=4200] yarn chef-socket folder [--debug] [--ssl] [--key example.key] [--cert example.crt] [--plugin path/to/file.js]
 ```
 
 ```ts
@@ -42,7 +42,7 @@ startServer({
   // folder to static server files
   folder: process.argv[2],
   // ssl = undefined | { key, cert }
-  ssl: undefined,
+  ssl: process.argv.includes("--ssl") ? ssl : undefined,
 }).then((server) => {
   // server api is get, post, any
   server.any("/*", (res, req) => {
@@ -54,6 +54,9 @@ startServer({
 - `PORT=4200` - choose server port
 - `folder` - folder you want to server static files from
 - `--debug` - show logs
+- `--ssl` - start as https server, with self signed certificate
+- `--key example.key` - path to real certificate key, use with `--ssl`
+- `--cert example.crt` - path to real certificate, use with `--ssl`
 - `--plugin path/to/file.js` - path to `WSPlugin`, can use multiple times
 
 ## Install
