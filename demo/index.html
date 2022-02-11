@@ -2,9 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>
-      Chat
-    </title>
+    <title>Chat</title>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=no"
@@ -24,7 +22,10 @@
   </head>
 
   <body>
-    <img src="https://raw.githubusercontent.com/chef-js/socket/main/chef.png" class="bear" />
+    <img
+      src="https://raw.githubusercontent.com/chef-js/socket/main/chef.png"
+      class="bear"
+    />
 
     <h1>Chat</h1>
 
@@ -43,47 +44,49 @@
       src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"
     ></script>
     <script type="text/javascript">
-      const socket = new io(location.origin.replace(/^http/, 'ws'), { transports: ["websocket"] })
-      const refs = getHTMLElements()
+      const socket = new io(location.origin.replace(/^http/, "ws"), {
+        transports: ["websocket"],
+      });
+      const refs = getHTMLElements();
 
-      socket.on('connect', () => {
+      socket.on("connect", () => {
         // step 1 ~> 2 of flow - send handshake of plugin name
-        socket.emit('/join', 'chat')
-      })
+        socket.emit("/join", "chat");
+      });
 
       socket.onAny((event, id, data) => {
         // append output
-        const string = [id, event, data].filter(Boolean).join(' &gt; ')
+        const string = [id, event, data].filter(Boolean).join(" &gt; ");
 
-        refs.messages.innerHTML += `<div>${string}</div>\n`
-      })
+        refs.messages.innerHTML += `<div>${string}</div>\n`;
+      });
 
-      socket.on('/join', (id) => {
+      socket.on("/join", (id) => {
         // first join is your join, set your server named id
         if (!refs.username.innerText) {
-          refs.username.innerText = id
+          refs.username.innerText = id;
         }
-      })
+      });
 
-      refs.chat.addEventListener('submit', (event) => {
-        event.preventDefault()
+      refs.chat.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-        const payload = refs.message.value.trim()
-        if (!payload) return
+        const payload = refs.message.value.trim();
+        if (!payload) return;
 
-        socket.emit('say', payload)
+        socket.emit("say", payload);
 
-        refs.message.value = ''
-      })
+        refs.message.value = "";
+      });
 
       function getHTMLElements() {
-        return ['username', 'messages', 'message', 'chat'].reduce(
+        return ["username", "messages", "message", "chat"].reduce(
           (obj, id) => ({
             ...obj,
-            [id]: document.querySelector(`#${id}`)
+            [id]: document.querySelector(`#${id}`),
           }),
           {}
-        )
+        );
       }
     </script>
   </body>

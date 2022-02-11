@@ -1,6 +1,6 @@
 {
   "name": "chef-socket",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "keywords": [
     "chef-js",
     "server",
@@ -8,7 +8,8 @@
     "http-server",
     "express",
     "socket.io",
-    "websockets"
+    "websockets",
+    "spa"
   ],
   "description": "chef-js + express + socket.io = static files server + websockets",
   "main": "index.js",
