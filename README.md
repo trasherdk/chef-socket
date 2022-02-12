@@ -39,7 +39,7 @@ startServer({
   join: "/join",
   // disconnect from room event
   leave: "/leave",
-  // folder to static server files
+  // folder to static serve files
   folder: process.argv[2],
   // ssl = undefined | { key, cert }
   ssl: process.argv.includes("--ssl") ? ssl : undefined,
