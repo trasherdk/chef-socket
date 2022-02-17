@@ -49,7 +49,7 @@ describe("GIVEN chef is provided", () => {
     });
   });
 
-  describe("WHEN chef.serve is run on demo folder", () => {
+  describe("WHEN chef is run on demo folder", () => {
     it("THEN it should not throw error", async () => {
       const startChef = require(".");
       const test = async () =>
@@ -71,7 +71,7 @@ describe("GIVEN chef is provided", () => {
   describe("WHEN chef is initialized with plugin", () => {
     it("THEN it should start without error", (done) => {
       const startChef = require(".");
-      const { default: config } = require("chef-core/dist/config");
+      const config = require("chef-core/config");
 
       startChef({
         folder: "demo",
