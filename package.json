@@ -35,7 +35,7 @@
   "scripts": {
     "prebuild": "rm -rf dist",
     "build": "tsc",
-    "test": "jest",
+    "test": "jest --forceExit",
     "start": "bin/chef-socket demo --plugin node_modules/chef-core/chat.js",
     "precommit": "yarn build && npx prettier . --write"
   },
