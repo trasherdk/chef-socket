@@ -61,24 +61,13 @@ async function createServer(config) {
       });
     });
   }
-  // WSGet compatible, this = method: string
-  function expressReader(path, wsGet) {
-    const action = app[this.toLowerCase()];
-    if (action) {
-      action.call(app, path, (req, res, next) => wsGet(res, req, next));
-    }
-  }
-  return {
-    async listen(port) {
-      return new Promise((resolve) => {
-        // ensure port is number
-        server.listen(+port, () => resolve(server));
-      });
-    },
-    get: expressReader.bind("GET"),
-    post: expressReader.bind("POST"),
-    any: expressReader.bind("ANY"),
+  app.start = function (port) {
+    return new Promise((resolve) => {
+      // ensure port is number
+      server.listen(+port, () => resolve(app));
+    });
   };
+  return app;
 }
 exports.createServer = createServer;
 function createExpressServer(config, app) {
@@ -97,7 +86,7 @@ function createExpressServer(config, app) {
   return http_1.default.createServer(app);
 }
 function requestHandler(fileReaderCache) {
-  return (res, req) => {
+  return (req, res) => {
     const url = (0, get_url_1.default)(req.originalUrl);
     const { status, mime, body } = fileReaderCache.get(url);
     if (config_1.default.debug) {
@@ -106,7 +95,7 @@ function requestHandler(fileReaderCache) {
     // header sets content type
     res.header("Content-Type", mime);
     // write header sets status
-    res.writeHeader(status);
+    res.writeHead(status);
     res.end(body);
   };
 }

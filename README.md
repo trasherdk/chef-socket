@@ -22,7 +22,7 @@ $ yarn chef-socket node_modules/chef-socket/demo --plugin node_modules/chef-core
 ## Running
 
 ```bash
-$ [PORT=4200] yarn chef-socket folder [--debug] [--ssl] [--key example.key] [--cert example.crt] [--plugin path/to/file.js]
+$ [PORT=4200] [yarn|npx] chef-socket folder [--debug] [--ssl] [--key example.key] [--cert example.crt] [--plugin path/to/file.js]
 ```
 
 ```ts
@@ -45,7 +45,7 @@ startServer({
   ssl: process.argv.includes("--ssl") ? ssl : undefined,
 }).then((server) => {
   // server api is get, post, any
-  server.any("/*", (res, req) => {
+  server.any("/*", (req: Express.Request, res: Express.Response) => {
     res.end("200 OK");
   });
 });
