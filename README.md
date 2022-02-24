@@ -8,7 +8,7 @@
 
 designed for **node** written in **typescript**, with **tests**
 
-- `express` for serving files (and `socket.io` for websockets)
+- `express` for routing (and `socket.io` for websockets)
 
 ## Minimal Chat Demo
 
@@ -43,7 +43,7 @@ startServer({
   folder: process.argv[2],
   // ssl = undefined | { key, cert }
   ssl: process.argv.includes("--ssl") ? ssl : undefined,
-}).then((server) => {
+}).then((server: Express.Application) => {
   // server api is get, post, any
   server.any("/*", (req: Express.Request, res: Express.Response) => {
     res.end("200 OK");
