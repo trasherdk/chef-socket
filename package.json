@@ -1,6 +1,6 @@
 {
   "name": "chef-socket",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "keywords": [
     "chef-js",
     "server",
